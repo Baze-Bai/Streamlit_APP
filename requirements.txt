@@ -1,0 +1,9 @@
+streamlit
+numpy
+joblib
+lime
+matplotlib
+scikit-image
+tensorflow
+opencv-python-headless
+boto3
