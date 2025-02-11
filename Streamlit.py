@@ -384,17 +384,20 @@ if uploaded_file is not None:
             st.pyplot(fig2)
 
     elif model_choice == "Deep Learning Model":
-        st.header("🤖 Deep Learning Classification")
-        
-        # Classification Prediction
-        prediction = DL_classify(image, dl_model)
-        st.success(f"**Prediction:** {prediction}")
-
-        # Integrated Gradients Explainability
-        with st.spinner("✨ Generating Integrated Gradients Explainability..."):
-            X_image = DL_explainability(dl_model, image)
-
-        st.subheader("Integrated Gradients Visualization")
-        st.image(X_image, caption="Integrated Gradients Visualization", use_container_width=True)
+        try:
+            st.header("🤖 Deep Learning Classification")
+            
+            # Classification Prediction
+            prediction = DL_classify(image, dl_model)
+            st.success(f"**Prediction:** {prediction}")
+    
+            # Integrated Gradients Explainability
+            with st.spinner("✨ Generating Integrated Gradients Explainability..."):
+                X_image = DL_explainability(dl_model, image)
+    
+            st.subheader("Integrated Gradients Visualization")
+            st.image(X_image, caption="Integrated Gradients Visualization", use_container_width=True)
+        except Exception as e:
+            st.error(f"Error occurred: {e}")
 else:
     st.info("💡 Please upload an image to proceed.")
