@@ -1,10 +1,10 @@
 streamlit
-numpy==1.26.4
+numpy
 joblib
 lime
 matplotlib
-scikit-image==0.25.1
-tensorflow-intel==2.18.0
-opencv-python==4.11.0.86
-boto3==1.36.17
-scikit-learn==1.5.2
+scikit-image
+tensorflow-intel
+opencv-python
+boto3
+scikit-learn
