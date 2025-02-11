@@ -18,6 +18,9 @@ from tensorflow.keras import layers, models
 import numpy as np
 import boto3
 from io import BytesIO
+from skimage.color import rgb2gray
+from skimage.transform import resize
+from skimage import feature
 
 ################################################################S3#####################################################################################################################################################
 
@@ -347,7 +350,7 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
     # Read and display the uploaded image
     image = imread(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
     st.markdown("---")  # Horizontal line for separation
 
     if model_choice == "Machine Learning Model":
@@ -391,6 +394,6 @@ if uploaded_file is not None:
             X_image = DL_explainability(dl_model, image)
 
         st.subheader("Integrated Gradients Visualization")
-        st.image(X_image, caption="Integrated Gradients Visualization", use_column_width=True)
+        st.image(X_image, caption="Integrated Gradients Visualization", use_container_width=True)
 else:
     st.info("💡 Please upload an image to proceed.")
