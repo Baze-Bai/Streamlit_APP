@@ -10,7 +10,8 @@ from skimage.transform import resize
 from skimage.segmentation import mark_boundaries, slic
 from tensorflow.keras.models import load_model
 import cv2
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # 禁用所有 GPU
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # 禁用 TensorFlow 的警告和错误日志
 import tensorflow as tf
 import io
 import tensorflow.keras.backend as K
