@@ -388,9 +388,6 @@ if uploaded_file is not None:
             prediction = DL_classify(image, dl_model)
             st.success(f"**Prediction:** {prediction}")
     
-            # Integrated Gradients Explainability
-            with st.spinner("✨ Generating Integrated Gradients Explainability..."):
-                DL_explainability(dl_model, image)
 
         except Exception as e:
             import traceback
