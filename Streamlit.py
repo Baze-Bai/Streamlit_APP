@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 from skimage.io import imread
 from skimage.transform import resize
 from skimage.segmentation import mark_boundaries, slic
-from process_data_non_dl import extract_lbp_features  # Import LBP feature extractor
 from tensorflow.keras.models import load_model
 import cv2
 import tensorflow as tf
@@ -254,6 +253,15 @@ def DL_explainability(model, image, class_idx=1):
 
 MODEL_PATH = "E:/540_dl/RandomForest_breakhis.pkl"
 ml_model = joblib.load(MODEL_PATH)
+
+# LBP Feature Extraction
+def extract_lbp_features(image, num_points=24, radius=8):
+    gray = rgb2gray(image)
+    lbp = feature.local_binary_pattern(gray, num_points, radius, method="uniform")
+    (hist, _) = np.histogram(lbp.ravel(), bins=np.arange(0, num_points + 3), range=(0, num_points + 2))
+    hist = hist.astype("float")
+    hist /= (hist.sum() + 1e-6)
+    return hist
 
 # ✅ Function to preprocess image and extract LBP features
 def process_image(image):
