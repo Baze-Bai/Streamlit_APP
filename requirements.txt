@@ -5,6 +5,6 @@ lime
 matplotlib
 scikit-image
 tensorflow-intel
-opencv-python
+opencv-python-headless
 boto3
 scikit-learn
