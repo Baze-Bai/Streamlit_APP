@@ -398,6 +398,7 @@ if uploaded_file is not None:
             st.subheader("Integrated Gradients Visualization")
             st.image(X_image, caption="Integrated Gradients Visualization", use_container_width=True)
         except Exception as e:
-            st.error(f"Error occurred: {e}")
+            import traceback
+            st.error(f"Error: {traceback.format_exc()}")
 else:
     st.info("💡 Please upload an image to proceed.")
