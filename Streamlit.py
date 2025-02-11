@@ -30,9 +30,7 @@ s3 = boto3.client(
     region_name=aws_region
 )
 
-BUCKET_NAME = "dlmodel540" 
-MODEL_KEY = "final_hybrid_model.h5"  #
-LOCAL_PATH = "E:/540_dl/dl_model/final_hybrid_model.h5"  
+LOCAL_PATH = "final_hybrid_model.h5"  
 s3.download_file(BUCKET_NAME, MODEL_KEY, LOCAL_PATH)
 ################################################################S3#####################################################################################################################################################
 
