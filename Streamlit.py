@@ -21,8 +21,7 @@ import boto3
 from io import BytesIO
 
 ################################################################S3#####################################################################################################################################################
-aws_access_key = "AKIAUQ4L3QYM5U7HITXN"  
-aws_secret_key = "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"  
+
 aws_region = "us-east-1"  
 
 s3 = boto3.client(
