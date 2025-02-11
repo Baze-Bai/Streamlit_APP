@@ -218,44 +218,42 @@ def integrated_gradients(model, x, baseline=None, steps=50, class_idx=0):
 
 def DL_explainability(model, image, class_idx=1):
     img_batch = df_preprocess(image)
+    if img_batch is None or img_batch.size == 0:
+        raise ValueError("Processed image batch is empty.")
+    
+    # Generate Integrated Gradients
     ig_map = integrated_gradients(model, img_batch, class_idx=class_idx)
+    if ig_map is None or ig_map.size == 0:
+        raise ValueError("Integrated gradients map is empty.")
     
     original_img = img_batch[0]
     normalized_img = (original_img - original_img.min()) / (original_img.max() - original_img.min() + 1e-8)
     
+    # Prepare heatmap for visualization
     ig_map_single = ig_map[0]
     ig_map_2d = np.mean(ig_map_single, axis=-1)
     ig_map_norm = normalize_map(ig_map_2d)
-    overlay_img = overlay_heatmap(normalized_img, ig_map_norm, alpha=0.5, cmap='jet')
-     
-    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
     
-    # Original image
-    axes[0].imshow(normalized_img)
-    axes[0].set_title("Original Image")
-    axes[0].axis("off")
+    # Generate masks for positive and negative regions
+    temp_pos = np.copy(normalized_img)
+    mask_pos = ig_map_norm > 0.5  # Example threshold for positive regions
     
-    # IG heatmap
-    im = axes[1].imshow(ig_map_norm, cmap="jet")
-    axes[1].set_title("IG Map (2D Mean)")
-    plt.colorbar(im, ax=axes[1])
-    axes[1].axis("off")
+    temp_neg = np.copy(normalized_img)
+    mask_neg = ig_map_norm <= 0.5  # Example threshold for negative regions
     
-    # Overlay images
-    axes[2].imshow(overlay_img)
-    axes[2].set_title("Overlay")
-    axes[2].axis("off")
+    # Display positive regions
+    st.markdown("**Positive Regions**")
+    fig1, ax1 = plt.subplots(figsize=(6, 6))
+    ax1.imshow(mark_boundaries(temp_pos, mask_pos, color=(1, 0, 0), mode="thick"))  # Red boundaries
+    ax1.axis("off")
+    st.pyplot(fig1)
     
-    # Adjust layout 
-    plt.tight_layout()
-
-    # load image
-    img_buffer = io.BytesIO()
-    plt.savefig(img_buffer, format="png")
-    img_buffer.seek(0)  
-    plt.close(fig)  
-
-    return img_buffer
+    # Display negative regions
+    st.markdown("**Negative Regions**")
+    fig2, ax2 = plt.subplots(figsize=(6, 6))
+    ax2.imshow(mark_boundaries(temp_neg, mask_neg, color=(0, 0, 1), mode="thick"))  # Blue boundaries
+    ax2.axis("off")
+    st.pyplot(fig2)
 
 ################################################################Deep learning part#####################################################################################################################################################
 
@@ -392,10 +390,8 @@ if uploaded_file is not None:
     
             # Integrated Gradients Explainability
             with st.spinner("✨ Generating Integrated Gradients Explainability..."):
-                X_image = DL_explainability(dl_model, image)
-    
-            st.subheader("Integrated Gradients Visualization")
-            st.image(X_image, caption="Integrated Gradients Visualization", use_container_width=True)
+                DL_explainability(dl_model, image)
+
         except Exception as e:
             import traceback
             st.error(f"Error: {traceback.format_exc()}")
