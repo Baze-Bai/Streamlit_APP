@@ -44,17 +44,6 @@ model_path = local_path_2
 ml_model = joblib.load(model_path)
 
     
-# Load deep learning model
-dl_model = build_hybrid_model(
-    input_shape=(128, 128, 3),  # 确保使用 input_shape 而不是 batch_shape
-    num_classes=2,
-    patch_size=(32, 32)
-)
-
-dl_model_path = local_path
-dl_model.load_weights(dl_model_path)
-
-
 ################################################################S3#####################################################################################################################################################
 
 
@@ -143,6 +132,17 @@ def build_hybrid_model(input_shape, num_classes, patch_size):
     fused = adaptive_branch_fusion(efficientnet_features, patches_features, neck_features, hidden_dim=64)
     outputs = layers.Dense(num_classes, activation='softmax')(fused)
     return models.Model(inputs=inputs, outputs=outputs)
+
+
+# Load deep learning model
+dl_model = build_hybrid_model(
+    input_shape=(128, 128, 3),  # 确保使用 input_shape 而不是 batch_shape
+    num_classes=2,
+    patch_size=(32, 32)
+)
+
+dl_model_path = local_path
+dl_model.load_weights(dl_model_path)
 
 ################################################################Define the structure and Load model#####################################################################################################################################################
 
