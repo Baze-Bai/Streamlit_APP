@@ -4,8 +4,7 @@ joblib
 lime
 matplotlib
 scikit-image
-tensorflow
-tensorflow-intel
+tensorflow-cpu
 opencv-python-headless
 boto3
 scikit-learn
