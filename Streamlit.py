@@ -34,6 +34,27 @@ bucket_name = os.environ.get("BUCKET_NAME")
 model_key = os.environ.get("MODEL_KEY")
 local_path = "final_hybrid_model.h5"
 s3.download_file(bucket_name, model_key, local_path)
+
+model_key_2 = "RandomForest_breakhis.pkl"  # Key for the second model
+local_path_2 = "RandomForest_breakhis.pkl"     # Local path for the second model
+s3.download_file(bucket_name, model_key_2, local_path_2)
+
+# Load machine learning model
+model_path = local_path_2
+ml_model = joblib.load(model_path)
+
+    
+# Load deep learning model
+dl_model = build_hybrid_model(
+    input_shape=(128, 128, 3),  # 确保使用 input_shape 而不是 batch_shape
+    num_classes=2,
+    patch_size=(32, 32)
+)
+
+dl_model_path = local_path
+dl_model.load_weights(dl_model_path)
+
+
 ################################################################S3#####################################################################################################################################################
 
 
@@ -122,17 +143,6 @@ def build_hybrid_model(input_shape, num_classes, patch_size):
     fused = adaptive_branch_fusion(efficientnet_features, patches_features, neck_features, hidden_dim=64)
     outputs = layers.Dense(num_classes, activation='softmax')(fused)
     return models.Model(inputs=inputs, outputs=outputs)
-    
-
-dl_model = build_hybrid_model(
-    input_shape=(128, 128, 3),  # 确保使用 input_shape 而不是 batch_shape
-    num_classes=2,
-    patch_size=(32, 32)
-)
-
-DL_MODEL_PATH = LOCAL_PATH
-dl_model.load_weights(DL_MODEL_PATH)
-
 
 ################################################################Define the structure and Load model#####################################################################################################################################################
 
@@ -250,9 +260,6 @@ def DL_explainability(model, image, class_idx=1):
 
 
 ################################################################machine learning part#####################################################################################################################################################
-
-MODEL_PATH = "E:/540_dl/RandomForest_breakhis.pkl"
-ml_model = joblib.load(MODEL_PATH)
 
 # LBP Feature Extraction
 def extract_lbp_features(image, num_points=24, radius=8):
