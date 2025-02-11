@@ -7,4 +7,4 @@ scikit-image
 tensorflow-cpu
 opencv-python-headless
 boto3
-scikit-learn
+scikit-learn==1.6.0
