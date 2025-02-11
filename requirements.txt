@@ -4,7 +4,7 @@ joblib
 lime
 matplotlib
 scikit-image
-tensorflow
+tensorflow-intel
 opencv-python-headless
 boto3
-scikit-learn==1.6.0
+scikit-learn==1.5.2
