@@ -30,8 +30,10 @@ s3 = boto3.client(
     region_name=aws_region
 )
 
- 
-s3.download_file(BUCKET_NAME, MODEL_KEY, LOCAL_PATH)
+bucket_name = os.environ.get("BUCKET_NAME")
+model_key = os.environ.get("MODEL_KEY")
+local_path = "final_hybrid_model.h5"
+s3.download_file(bucket_name, model_key, local_path)
 ################################################################S3#####################################################################################################################################################
 
 
