@@ -10,9 +10,9 @@ from skimage.transform import resize
 from skimage.segmentation import mark_boundaries, slic
 from tensorflow.keras.models import load_model
 import cv2
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import tensorflow as tf
 import io
-import tensorflow as tf
 import tensorflow.keras.backend as K
 from tensorflow.keras import layers, models
 import numpy as np
